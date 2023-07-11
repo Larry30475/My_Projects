@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8080/MyCalculator?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/System.Numerics" />
+  <xs:import schemaLocation="http://localhost:8080/MyCalculator?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/WcfService" />
+  <xs:element name="iAdd">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="val1" type="xs:int" />
+        <xs:element minOccurs="0" name="val2" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="iAddResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="iAddResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="iSub">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="val1" type="xs:int" />
+        <xs:element minOccurs="0" name="val2" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="iSubResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="iSubResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="iMul">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="val1" type="xs:int" />
+        <xs:element minOccurs="0" name="val2" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="iMulResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="iMulResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="iDiv">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="val1" type="xs:int" />
+        <xs:element minOccurs="0" name="val2" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="iDivResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="iDivResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="iMod">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="val1" type="xs:int" />
+        <xs:element minOccurs="0" name="val2" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="iModResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="iModResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CountAndFindMaxPrimeNumbers">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/System.Numerics" minOccurs="0" name="L1" type="q1:BigInteger" />
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/System.Numerics" minOccurs="0" name="L2" type="q2:BigInteger" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CountAndFindMaxPrimeNumbersResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="CountAndFindMaxPrimeNumbersResult" nillable="true" type="q3:PrimeNumbersResult" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
