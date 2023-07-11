@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="c4a95284-4fdd-451a-ac3b-79eaf15edd84" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8080/DatabaseService" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="DatabaseService.xsd" MetadataType="Schema" ID="0edb0bd2-3119-43b9-a9ba-b9a5ad93ae3b" SourceId="1" SourceUrl="http://localhost:8080/DatabaseService?xsd=xsd3" />
+    <MetadataFile FileName="DatabaseService.disco" MetadataType="Disco" ID="9cc00e1d-70f3-4f92-bc0d-1e7162822b12" SourceId="1" SourceUrl="http://localhost:8080/DatabaseService?disco" />
+    <MetadataFile FileName="DatabaseService1.xsd" MetadataType="Schema" ID="8bab0dec-7271-4661-b64f-f8bd6b18099a" SourceId="1" SourceUrl="http://localhost:8080/DatabaseService?xsd=xsd1" />
+    <MetadataFile FileName="DatabaseService2.xsd" MetadataType="Schema" ID="f91c705f-2f3c-4276-a423-65f86e7b9893" SourceId="1" SourceUrl="http://localhost:8080/DatabaseService?xsd=xsd0" />
+    <MetadataFile FileName="DatabaseService3.xsd" MetadataType="Schema" ID="4a0b79d9-41fd-44fa-a2fb-e5f234884956" SourceId="1" SourceUrl="http://localhost:8080/DatabaseService?xsd=xsd2" />
+    <MetadataFile FileName="DatabaseService.wsdl" MetadataType="Wsdl" ID="f7fa089c-0f5f-435d-8af3-b423273ef50c" SourceId="1" SourceUrl="http://localhost:8080/DatabaseService?wsdl" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
