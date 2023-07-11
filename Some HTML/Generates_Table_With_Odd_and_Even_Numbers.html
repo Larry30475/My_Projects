@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Tablica</title>
+    </head>
+    <body>
+        <script>
+            function createAll() {
+                var numof = window.prompt("input number of columns and rows", "13");
+
+                if(Number(numof) < 5 || Number(numof) > 20)
+                {
+                    alert("You cannot input less than 5 or greater than 20, so here you go 13");
+                    generateTable(13);
+                }
+                else{
+                    generateTable(Number(numof));
+                }
+            }
+            function getRandomInt() {
+                min = Math.ceil(1);
+                max = Math.floor(99);
+                return Math.floor(Math.random() * (max - min + 1) + min);
+            }
+            function generateTable(number) {
+                const tbl = document.createElement("table");
+                tbl.setAttribute("id", "myTable");
+                const tblBody = document.createElement("tbody");
+
+                rowCol = [];
+                for(let i = 1; i < number + 1; i++)
+                {
+                    rowCol[i] = getRandomInt();
+                }
+
+                for (let i = 0; i < number + 1; i++) {
+                    const row = document.createElement("tr");
+
+                    for (let j = 0; j < number + 1; j++) {
+                        const cell = document.createElement("td");
+                        if(i == 0 && j == 0){
+                            const cellText = document.createTextNode("");
+                            cell.appendChild(cellText);
+                            cell.style.backgroundColor = "yellow";
+                        }
+                        else if(i == 0){
+                            cell.appendChild(document.createTextNode(rowCol[j]));
+                            cell.style.backgroundColor = "yellow";
+                        }
+                        else if(j == 0){
+                            cell.appendChild(document.createTextNode(rowCol[i]));
+                            cell.style.backgroundColor = "yellow";
+                        }
+                        else{
+                            cell.appendChild(document.createTextNode(rowCol[i] * rowCol[j]));
+                            if((rowCol[i] * rowCol[j]) % 2 == 0){
+                                cell.style.backgroundColor = "rgb(0, 179, 255)";
+                            }
+                            else{
+                                cell.style.backgroundColor = "rgb(255, 0, 47)";
+                            }
+                        }
+                        row.appendChild(cell);
+                    }
+                    tblBody.appendChild(row);
+                }
+                tbl.appendChild(tblBody);
+                document.body.appendChild(tbl);
+                tbl.setAttribute("border", "2");
+            }
+        </script>
+        <input type="button" value="Generate a table" onclick="createAll()" />
+    </body>
+</html>
