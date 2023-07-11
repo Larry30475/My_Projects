@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AJAX CRUD App</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <style>
+    table {border-spacing: 10px;}
+  </style>
+</head>
+<body>
+  <h1>AJAX CRUD App</h1>
+
+  <button onclick="MyDataInfo()">Display MyData.info()</button>
+  <p id="myDataInfo"></p>
+  
+
+  <form id="changeDataFormat">
+    <h2>Select format of data:</h2>
+    <input type="radio" id="xml" name="dataFormat" value="XML" checked>
+    <label for="xml">XML</label><br>
+    <input type="radio" id="json" name="dataFormat" value="JSON">
+    <label for="json">JSON</label><br>
+  </form>
+
+  <p id="currentDataFormat">Current format of data - XML</p>
+
+  <h2>Add Person</h2>
+  <form id="addPersonForm">
+    <label for="name">Name:</label>
+    <input type="text" id="name" required><br>
+
+    <label for="age">Age:</label>
+    <input type="number" id="age" required><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" required><br>
+
+    <button type="submit">Add Person</button>
+  </form>
+
+  <p id="resultAddPerson"></p>
+
+  <h2>Get Person by ID</h2>
+  <form id="getPersonForm">
+    <label for="personId">Person ID:</label>
+    <input type="number" id="personId" required><br>
+
+    <button type="submit">Get Person</button>
+  </form>
+
+  <p id="resultGetPersonById"></p>
+
+  <h2>Update Person</h2>
+  <form id="updatePersonForm">
+    <label for="updatePersonId">Person ID:</label>
+    <input type="number" id="updatePersonId" required><br>
+
+    <label for="updateName">Name:</label>
+    <input type="text" id="updateName" required><br>
+
+    <label for="updateAge">Age:</label>
+    <input type="number" id="updateAge" required><br>
+
+    <label for="updateEmail">Email:</label>
+    <input type="email" id="updateEmail" required><br>
+
+    <button type="submit">Update Person</button>
+  </form>
+
+  <p id="resultUpdatePerson"></p>
+
+  <h2>Delete Person</h2>
+  <form id="deletePersonForm">
+    <label for="deletePersonId">Person ID:</label>
+    <input type="number" id="deletePersonId" required><br>
+
+    <button type="submit">Delete Person</button>
+  </form>
+
+  <p id="resultDeletePerson"></p>
+
+  <h2>Get All Persons</h2>
+  <button id="getAllPersonsBtn">Get All Persons</button>
+
+  <p id="resultGetAllPersons"></p>
+
+  <h2>Get Database Size</h2>
+  <button id="getDatabaseSizeBtn">Get Database Size</button>
+
+  <p id="resultGetDatabaseSize"></p>
+
+  <h2>Get Persons by Name</h2>
+  <form id="getPersonsByNameForm">
+    <label for="nameFilter">Name:</label>
+    <input type="text" id="nameFilter" required><br>
+
+    <button type="submit">Filter Persons</button>
+  
+  </form>
+
+  <p id="resultGetPersonsByName"></p>
+
+  <h2>Show Creators</h2>
+  <button id="getCreatorsBtn"> Show Creators</button>
+
+  <p id="resultGetCreators"></p>
+
+  <script>
+    $(document).ready(function() {
+      var dataFormat = 'xml';
+      var urlFormat = 'http://172.20.10.10:58834/Service1.svc/persons';
+      var contentType = "text/xml";
+
+  // Add person
+      $('#addPersonForm').submit(function(event) {
+        event.preventDefault();
+        var name = $('#name').val();
+        var age = $('#age').val();
+        var email = $('#email').val();
+
+        var person = {
+          Id: -1,
+          Name: name,
+          Age: age,
+          Email: email
+        };
+
+        if (dataFormat == 'xml') {
+          var data = personToXml(person);
+        }
+        else {
+          var data = JSON.stringify(person);
+        }
+
+        $.ajax({
+          type: 'POST',
+          url: urlFormat,
+          data: data,
+          contentType: contentType,
+          
+          success: function(xhr, status, response) {
+            document.getElementById('resultAddPerson').innerHTML = "Success: " + response.statusText + ", Status Code: " + response.status;
+          },
+          error: function(xhr, status, error) {
+            document.getElementById('resultAddPerson').innerHTML = "Error: " + xhr.statusText + ", Status Code: " + xhr.status;
+          }
+        });
+      });
+
+  // Get Person by ID
+      $('#getPersonForm').submit(function(event) {
+        event.preventDefault();
+        var personId = $('#personId').val();
+
+        $.ajax({
+          type: 'GET',
+          url: urlFormat + '/' + personId,
+          dataType: dataFormat,
+
+          success: function(xhr, status, response) {
+            if (dataFormat == "xml") {
+              var result = xmlToPerson(response.responseXML);
+            }
+            else {
+              var result = response.responseJSON;
+            }
+
+            var resultHTML = "<table><tr><th>Id</th><th>Name</th><th>Age</th><th>Email</th></tr>";
+            resultHTML += "<tr><td>" + result.Id + "</td><td>" + result.Name + "</td><td>" + result.Age + "</td><td>" + result.Email + "</td></tr>"
+            resultHTML += "</table>";
+
+            document.getElementById('resultGetPersonById').innerHTML = resultHTML;
+          },
+          error: function(xhr, status, error) {
+            document.getElementById('resultGetPersonById').innerHTML = "Error: " + xhr.statusText + ", Status Code: " + xhr.status;
+          }
+        });
+      });
+
+  // Update Person
+      $('#updatePersonForm').submit(function(event) {
+        event.preventDefault();
+        var updatePersonId = $('#updatePersonId').val();
+        var updateName = $('#updateName').val();
+        var updateAge = $('#updateAge').val();
+        var updateEmail = $('#updateEmail').val();
+
+        var person = {
+          Id: updatePersonId,
+          Name: updateName,
+          Age: updateAge,
+          Email: updateEmail
+        };
+
+        if (dataFormat == 'xml') {
+          var data = personToXml(person);
+        }
+        else {
+          var data = JSON.stringify(person);
+        }
+
+        $.ajax({
+          type: 'PUT',
+          url: urlFormat + '/' + updatePersonId,
+          data: data,
+          contentType: contentType,
+
+          success: function(xhr, status, response) {
+            document.getElementById('resultUpdatePerson').innerHTML = "Success: " + response.statusText + ", Status Code: " + response.status;
+          },
+          error: function(xhr, status, error) {
+            document.getElementById('resultUpdatePerson').innerHTML = "Error: " + xhr.statusText + ", Status Code: " + xhr.status;
+          }
+        });
+      });
+
+  // Delete Person
+      $('#deletePersonForm').submit(function(event) {
+        event.preventDefault();
+        var deletePersonId = $('#deletePersonId').val();
+
+        $.ajax({
+          type: 'DELETE',
+          url: urlFormat + '/' + deletePersonId,
+
+          success: function(xhr, status, response) {
+            document.getElementById('resultDeletePerson').innerHTML = "Success: " + response.statusText + ", Status Code: " + response.status;
+          },
+          error: function(xhr, status, error) {
+            document.getElementById('resultDeletePerson').innerHTML = "Error: " + xhr.statusText + ", Status Code: " + xhr.status;
+          }
+        });
+      });
+
+  // Get All Persons
+      $('#getAllPersonsBtn').click(function() {
+        $.ajax({
+          type: 'GET',
+          url: urlFormat,
+          dataType: dataFormat,
+
+          success: function(xhr, status, response) {
+            var resultHTML = "";
+
+            if (dataFormat == "xml") {
+              var result = xmlToArrayPersons(response.responseXML);
+            }
+            else {
+              var result = response.responseJSON;
+            }
+
+            if (result.length == 0) {
+              resultHTML = "No data available";
+            }
+            else {
+              resultHTML = "<table><tr><th>Id</th><th>Name</th><th>Age</th><th>Email</th></tr>";
+              result.forEach(element => 
+                resultHTML += "<tr><td>" + element.Id + "</td><td>" + element.Name + "</td><td>" + element.Age + "</td><td>" + element.Email + "</td></tr>"
+              );
+              resultHTML += "</table>";
+            }
+
+            document.getElementById('resultGetAllPersons').innerHTML = resultHTML;
+          },
+          error: function(xhr, status, error) {
+            document.getElementById('resultGetAllPersons').innerHTML = "Error: " + xhr.statusText + ", Status Code: " + xhr.status;
+          }
+        });
+      });
+
+  // Get database size
+      $('#getDatabaseSizeBtn').click(function() {
+        $.ajax({
+          type: 'GET',
+          url: urlFormat + '/size',
+          dataType: dataFormat,
+
+          success: function(xhr, status, response) {
+            if (dataFormat == "xml") {
+              var number = $(response.responseXML).find("int").text();
+            }
+            else {
+              var number = response.responseJSON;
+            }
+
+            document.getElementById('resultGetDatabaseSize').innerHTML = "Rozmiar bazy: " + number;
+          },
+          error: function(xhr, status, error) {
+            document.getElementById('resultGetDatabaseSize').innerHTML = "Error: " + xhr.statusText + ", Status Code: " + xhr.status;
+          }
+        });
+      });
+
+  // Get Persons by Name
+      $('#getPersonsByNameForm').submit(function(event) {
+        event.preventDefault();
+        var nameFilter = $('#nameFilter').val();
+
+        $.ajax({
+          type: 'GET',
+          url: urlFormat + '/filter/' + nameFilter,
+          dataType: dataFormat,
+
+          success: function(xhr, status, response) {
+            var resultHTML = "";
+
+            if (dataFormat == "xml") {
+              var result = xmlToArrayPersons(response.responseXML);
+            }
+            else {
+              var result = response.responseJSON;
+            }
+
+            if (result.length == 0) {
+              resultHTML = "No data available";
+            }
+            else {
+              resultHTML = "<table><tr><th>Id</th><th>Name</th><th>Age</th><th>Email</th></tr>";
+              result.forEach(element => 
+                resultHTML += "<tr><td>" + element.Id + "</td><td>" + element.Name + "</td><td>" + element.Age + "</td><td>" + element.Email + "</td></tr>"
+              );
+              resultHTML += "</table>";
+            }
+
+            document.getElementById('resultGetPersonsByName').innerHTML = resultHTML;
+          },
+          error: function(xhr, status, error) {
+            document.getElementById('resultGetPersonsByName').innerHTML = "Error: " + xhr.statusText + ", Status Code: " + xhr.status;
+          }
+        });
+      });
+
+      $('#getCreatorsBtn').click(function() {
+        $.ajax({
+          type: 'GET',
+          url: urlFormat + '/creators/data',
+          dataType: dataFormat,
+
+          success: function(xhr, status, response) {
+            if (dataFormat == "xml") {
+              var people = $(response.responseXML).find("string").text();
+            }
+            else {
+              var people = response.responseJSON;
+            }
+
+            document.getElementById('resultGetCreators').innerHTML = "Creators: " + people;
+          },
+          error: function(xhr, status, error) {
+            document.getElementById('resultGetCreators').innerHTML = "Error: " + xhr.statusText + ", Status Code: " + xhr.status;
+          }
+        });
+      });
+
+    // Event listener for format selection
+      $('#changeDataFormat').on('click', function() {
+        if (document.getElementById('xml').checked && dataFormat != 'xml') {
+          dataFormat = 'xml';
+          urlFormat = 'http://172.20.10.10:58834/Service1.svc/persons',
+          contentType = "text/xml";
+          document.getElementById('currentDataFormat').innerHTML = "Current format of data - XML";
+        }
+        else if (document.getElementById('json').checked && dataFormat != 'json') {
+          dataFormat = 'json';
+          urlFormat = 'http://172.20.10.10:58834/Service1.svc/json/persons';
+          contentType = "application/json";
+          document.getElementById('currentDataFormat').innerHTML = "Current format of data - JSON";
+        }
+      });
+      
+    });
+
+    function personToXml(person) {
+        var xml = "<Person xmlns=\"http://schemas.datacontract.org/2004/07/MyWebService\">";
+        xml += "<Id>" + person.Id + "</Id>";
+        xml += "<Name>" + person.Name + "</Name>";
+        xml += "<Age>" + person.Age + "</Age>";
+        xml += "<Email>" + person.Email + "</Email>";
+        xml += "</Person>";
+        return xml;
+    }
+
+    function xmlToPerson(xml) {
+      var person = $(xml).find("Person");
+      var id = person.find("Id").text();
+      var name = person.find("Name").text();
+      var age = person.find("Age").text();
+      var email = person.find("Email").text();
+      return {
+          Id: id,
+          Name: name,
+          Age: age,
+          Email: email
+        };
+    }
+
+    function xmlToArrayPersons(xml) {
+      var result = [];
+      var persons = $(xml).find("Person");
+
+      persons.each(function () {
+          var person = $(this);
+          var id = person.find("Id").text();
+          var name = person.find("Name").text();
+          var email = person.find("Email").text();
+          var age = person.find("Age").text();
+
+          result.push({
+              Id: id,
+              Name: name,
+              Age: age,
+              Email: email
+          });
+      });
+
+      return result;
+    }
+    
+    async function MyDataInfo() {
+      const monthNames = ["stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca",
+        "lipca", "sierpnia", "września", "października", "listopada", "grudnia"
+      ];
+
+      var date = new Date();
+      var day = date.getDate().toString()
+      if (day.length == 1) {
+        day = "0" + day;
+      }
+      var month = monthNames[date.getMonth()];
+      var hour = date.getHours().toString();
+      if (hour.length == 1) {
+        hour = "0" + hour;
+      }
+      var minutes = date.getMinutes().toString();
+      if (minutes.length == 1) {
+        minutes = "0" + minutes;
+      }
+      var seconds = date.getSeconds().toString();
+      if (seconds.length == 1) {
+        seconds = "0" + seconds;
+      }
+      var curDate = day + "." + month + ", " + hour + ":" + minutes + ":" + seconds;
+
+      var ipAddressFetch = await fetch('https://api.ipify.org/?format=json');
+      var ipAddressJSON = await ipAddressFetch.json();
+      var ipAddress = ipAddressJSON.ip;
+
+      var myDataInfoHTML = "";
+      myDataInfoHTML += "<p>Wiktor Sadowy 260373</p>";
+      myDataInfoHTML += "<p>Ivan Luzhanskyi 247372</p>";
+      myDataInfoHTML += "<p>" + curDate + "</p>";
+      myDataInfoHTML += "<p>" + window.navigator.userAgent + "</p>"
+      myDataInfoHTML += "<p>" + ipAddress + "</p>"
+
+      document.getElementById("myDataInfo").innerHTML = myDataInfoHTML
+    }
+
+
+  </script>
+</body>
+</html>
