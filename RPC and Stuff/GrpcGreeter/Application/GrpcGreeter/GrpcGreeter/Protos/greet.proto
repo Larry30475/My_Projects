@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+option csharp_namespace = "GrpcGreeter";
+
+package greet;
+
+service Greeter {
+	rpc SendImageToServer (stream ImageBytes) returns (ConfirmationMessage);
+	rpc SendImageToClient (google.protobuf.Empty) returns (stream ImageBytes);
+}
+
+message ImageBytes {
+	bytes data = 1;
+}
+
+message ConfirmationMessage {
+	string message = 1;
+}
