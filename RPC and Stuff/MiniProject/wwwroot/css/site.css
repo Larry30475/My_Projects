@@ -1,0 +1,52 @@
+input[type='submit'], button, [aria-label] {
+    cursor: pointer;
+}
+
+#editForm {
+    display: none;
+}
+
+table {
+    font-family: Arial, sans-serif;
+    border: 1px solid;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: #f8f8f8;
+    padding: 5px;
+}
+
+td {
+    border: 1px solid;
+    padding: 5px;
+}
+
+#title-container {
+    text-align: center;
+    padding-bottom: 100px;
+}
+
+#center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 50vh;
+}
+
+#form-container,
+#table-container,
+#all-container,
+#filter-container,
+#count-container,
+#authors-container {
+    display: none;
+}
+
+.button {
+    padding: 10px 20px;
+    font-size: 16px;
+    width: 200px;
+    height: 100px;
+}

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Database</title>
+    <link rel="stylesheet" href="css/site.css" />
+</head>
+<body>
+    <div id="title-container">
+        <h1>Employee Database</h1>
+    </div>
+    <div id="center-container">
+        <div>
+            <button class="button" onclick="toggleView('form')">Add Employee</button>
+            <button class="button" onclick="toggleView('specific-id')">Get Specific ID</button>
+            <button class="button" onclick="toggleView('all')">Get All</button>
+        </div>
+
+        <div>
+            <button class="button" onclick="toggleView('filter')">Filter by Position</button>
+            <button class="button" onclick="toggleView('count')">Count Employees</button>
+            <button class="button" onclick="toggleView('authors')">Get Authors</button>
+        </div>
+
+        <div id="form-container">
+            <h3>Add</h3>
+            <form action="javascript:void(0);" method="POST" onsubmit="addItem()">
+                <input type="text" id="add-name" placeholder="Employee name">
+                <input type="text" id="add-position" placeholder="Employee position">
+                <input type="number" step="0.01" id="add-salary" placeholder="Employee salary">
+                <input type="date" id="add-dateHired" placeholder="Employee hired date">
+                <input type="submit" value="Add">
+            </form>
+        </div>
+
+        <div id="specific-id-container" style="display: none;">
+            <h3>Get Specific ID</h3>
+            <label for="employee-id">Employee ID:</label>
+            <input type="text" id="employee-id" />
+            <button onclick="showEmployeeById()">Show Employee</button>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Position</th>
+                    <th>Salary</th>
+                    <th>Date Hired</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tbody id="specific-id-employees"></tbody>
+            </table>
+        </div>
+
+        <div id="all-container">
+            <h3>All Employees</h3>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Position</th>
+                    <th>Salary</th>
+                    <th>Date Hired</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tbody id="all-employees"></tbody>
+            </table>
+        </div>
+
+        <div id="filter-container">
+            <h3>Filter by Position</h3>
+            <input type="text" id="filter-position" placeholder="Position">
+            <button onclick="filterByPosition()">Filter</button>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Position</th>
+                    <th>Salary</th>
+                    <th>Date Hired</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tbody id="filtered-employees"></tbody>
+            </table>
+        </div>
+
+        <div id="count-container">
+            <h3>Count Employees</h3>
+            <p id="employee-count"></p>
+        </div>
+
+        <div id="authors-container">
+            <h3>Authors</h3>
+            <p id="authorstext"></p>
+        </div>
+
+        <div id="editForm">
+            <h3>Edit</h3>
+            <form action="javascript:void(0);" onsubmit="updateItem()">
+                <input type="hidden" id="edit-id">
+                <input type="text" id="edit-name">
+                <input type="text" id="edit-position">
+                <input type="number" step="0.01" id="edit-salary">
+                <input type="date" id="edit-dateHired">
+                <input type="submit" value="Save">
+                <a onclick="closeInput()" aria-label="Close">&#10006;</a>
+            </form>
+        </div>
+
+        <p id="notification"></p>
+    </div>
+    <script src="js/site.js" asp-append-version="true"></script>
+    <script type="text/javascript"></script>
+</body>
+</html>
